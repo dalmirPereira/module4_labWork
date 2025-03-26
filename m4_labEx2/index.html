@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<head>
+    <style>
+        input {
+            width: 50px;
+        }
+        label {
+            width: 150px;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <div>
+            <h1>Two Numbers Calculator</h1>
+        </div>
+
+        <div>
+            <div>
+                Choose two numbers and the operator:
+            </div>
+
+            <form id="calculator">
+                <div>
+                    <label for="firstNumber">First Number:</label>
+                    <input type="text" size="20px" id="firstNumber" name="firstNumber">
+                </div>
+                <div>
+                    <label for="operator">Operator:   </label>
+                    <select id="operator">
+                        <option value="+">+</option>
+                        <option value="-">-</option>
+                        <option value="/">/</option>
+                        <option value="*">*</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="secondNumber">Second Number:</label>
+                    <input type="text" id="secondNumber" name="secondtNumber">
+                </div>
+
+                <button type="submit">Calculate</button>
+            </form>
+
+            <div>
+                <h2> Results: </h2>
+                <ul class="showResults"></ul>
+            </div>
+
+        </div>
+    </section>
+
+    <script>
+        //I declare results and this will create a array encapsulated in showResults().
+        let results = showResults();
+
+        document.getElementById('calculator').addEventListener('submit', (event) => {
+            //prevent the page to reload
+            event.preventDefault();
+
+            //get all the elements from the form.
+            const firstNumber = Number(document.getElementById('firstNumber').value);
+            const secondNumber = Number(document.getElementById('secondNumber').value);
+            const operator = document.getElementById('operator').value;
+            console.log(firstNumber, secondNumber, operator);
+
+            //do the calculation
+            let result = calculator(firstNumber, secondNumber, operator);
+            //and actvates showResults() that will print the template.
+            results(result);
+        });
+        
+        function calculator(firstNumber, secondNumber, operator) {
+            let result;
+
+            switch (operator) {
+                case '+':
+                    result = firstNumber + secondNumber;
+                    break;
+                case '-':
+                    result = firstNumber - secondNumber;
+                    break;
+                case '*':
+                    result = firstNumber * secondNumber;
+                    break;
+                case '/':
+                    // Check for division by zero
+                    if (secondNumber === 0) {
+                        return "Error: Division by 0.";
+                    }
+                    result = firstNumber / secondNumber;
+                    break;
+            }
+
+            return result;
+        }
+
+        function showResults() {
+            const results = [];
+
+            return function (result) {
+                //push the new result inside the array results.
+                results.push(result);
+                console.log(results);
+
+
+                // clone the template that includes a <ul>.
+               // const template = document.getElementById("results").content.cloneNode(true);
+                
+                // get the <ul> from the cloned template
+                //const ul = template.querySelector("ul")
+                
+                document.querySelector(".showResults").innerHTML = ''; // clear previous results for avoiding repetition.
+
+                // populate the template: it gets the element <ul> inside the template and add <li> to it.
+                // it will add a <li> for each array element.
+                for (let i in results) {
+                    const li = document.createElement("li");
+                    li.innerText = results[i];
+                    //ul.appendChild(li);
+                    document.querySelector(".showResults").appendChild(li); //populate the <div class="showResults"> with the template.
+                }
+                
+            }
+        }
+    </script>
+</body>
