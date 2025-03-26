@@ -1,0 +1,6 @@
+Functional Requirements: 
+
+1. User can create their wellbeing daily plan.
+2. User can upload their daily wellbeing statistics.
+3. User can write a daily journal entry.
+4. User can see statistics from it.
