@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>eCharts</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
+  </head>
+
+  <body>
+    <!-- Prepare a DOM with a defined width and height for ECharts -->
+    <div id="perPrice" style="width: 900px; height: 300px"></div>
+    <div id="perQuant" style="width: 900px; height: 300px"></div>
+
+    <script type="text/javascript">
+      // Initialise the echarts instance based on the prepared div
+      let perPriceChart = echarts.init(document.getElementById("perPrice"));
+      let perQuantChart = echarts.init(document.getElementById("perQuant"));
+
+      // Fetch data from FakeStore API
+      fetch("https://fakestoreapi.com/products")
+        .then((response) => response.json())
+        .then((products) => {
+          // Process the data to get category counts
+          console.log(products);
+          const categoryCounts = {};
+          const categoryPrices = {};
+
+          products.forEach((product) => {
+            const category = product.category;
+            categoryCounts[category] = (categoryCounts[category] || 0) + 1;
+            categoryPrices[category] = (categoryPrices[category] || 0) + product.price;
+            
+          });
+
+          console.log(categoryPrices);
+          for (const category in categoryPrices) {
+            categoryPrices[category] = categoryPrices[category] / categoryCounts[category];
+          };
+
+          // Extract category names and counts
+          const categories = Object.keys(categoryCounts);
+          const quantity = Object.values(categoryCounts);
+          const prices = categories.map((category) => categoryPrices[category]);
+          
+
+          // Set up the chart options using the fetched data
+          const perPriceOptions = {
+            title: {
+              text: "Fake Store Categories per Average Price",
+            },
+            xAxis: {
+              type: "category",
+              data: categories,
+            },
+            yAxis: {},
+            series: [
+              {
+                name: "# products",
+                type: "bar",
+                data: prices,
+              },
+            ],
+          };
+
+          // Set up the chart options using the fetched data
+          const perQuantOptions = {
+            title: {
+              text: "Fake Store Categories per Quantity of Products",
+            },
+            xAxis: {
+              type: "category",
+              data: categories,
+            },
+            yAxis: {},
+            series: [
+              {
+                name: "# products",
+                type: "bar",
+                data: quantity,
+              },
+            ],
+          };
+
+          // Display the chart with the updated data
+          perPriceChart.setOption(perPriceOptions);
+          perQuantChart.setOption(perQuantOptions);
+        })
+        .catch((error) => console.error("Error fetching data:", error));
+    </script>
+  </body>
+
+</html>

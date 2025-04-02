@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Module 4: Lab Exercise 7 (Animation CSS)</title>
+        <style>
+            body {
+                padding: 10px;
+                margin: 0;
+                height: 100vh;
+                overflow: hidden;
+            }
+
+            p {
+                width: 100px;
+                height: 100px;
+
+                animation-name: squareSlider;
+                animation-duration: 5s;
+                animation-iteration-count: infinite;
+            }
+
+            @keyframes squareSlider {
+                from { 
+                    transform: translateY(0);
+                    background-color: blue;
+                }
+                50% {
+                    transform: translateY(calc(100vh - 150px));
+                    background-color: red;   
+                }
+                to {
+                    transform: translateY(0);
+                    background-color: blue;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <p></p>
+    </body>
+</html>
